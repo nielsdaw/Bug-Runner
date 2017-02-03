@@ -21,6 +21,7 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
+        div = doc.getElementById('game'),
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime,
@@ -33,7 +34,7 @@ var Engine = (function(global) {
             'images/char-princess-girl.png',
             'images/Heart.png',
             'images/Star.png',
-            'images/rock.png',
+            'images/Rock.png',
             'images/Gem Blue.png',
             'images/Gem Orange.png',
             'images/Gem Green.png',
@@ -46,7 +47,7 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    div.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -142,9 +143,9 @@ var Engine = (function(global) {
             case 1:
                 background = [
                     'images/water-block.png', 
-                    'images/rock.png',   
-                    'images/rock.png',
-                    'images/rock.png',   
+                    'images/Rock.png',   
+                    'images/Rock.png',
+                    'images/Rock.png',   
                     'images/stone-block.png', 
                     'images/stone-block.png'
                 ]
@@ -172,9 +173,9 @@ var Engine = (function(global) {
             case 4:
                 background = [
                     'images/Gem Blue.png',   
-                    'images/rock.png', 
-                    'images/rock.png',
-                    'images/rock.png',
+                    'images/Rock.png', 
+                    'images/Rock.png',
+                    'images/Rock.png',
                     'images/water-block.png',
                     'images/water-block.png'
                 ]

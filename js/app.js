@@ -134,8 +134,8 @@ Player.prototype.reset_game = function() {
     var list = allEnemies;
     var list2 = allHelpers
     $('#score').text(this.score);
-    $('.modal').modal('show')
-    $('.modal').on('hidden.bs.modal', function (a) {
+    $('#modal-submit').modal('show')
+    $('#modal-submit').on('hidden.bs.modal', function (a) {
         current.lives = 5;
         current.score = 0;
         current.updateScore();
