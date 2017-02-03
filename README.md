@@ -9,3 +9,5 @@ A heart gives a life.
 A key destroys a bug.
 
 Have Fun!
+
+Player here: https://dawartz.dk/bug-runner
