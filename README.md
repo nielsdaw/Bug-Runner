@@ -10,4 +10,4 @@ A key destroys a bug.
 
 Have Fun!
 
-Player here: https://dawartz.dk/bug-runner
+Player here: https://www.dawartz.dk/bug-runner
