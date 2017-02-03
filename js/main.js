@@ -15,14 +15,14 @@ function postScore(){
     var score = $('#score').text();
     $.ajax({
         type: "POST",
-        url: "https://www.dawartz.dk/bug-runner/ProjectApi.php",
+        url: "./ProjectApi.php",
         data: {
             name: name,
             score: score
         },
         // Error processing
-        error: function (xhr, string) {
-            console.log('error');
+        error: function (xhr, string, thrownError) {
+            console.log('error:' + thrownError);
         },
         // Ok processing
         success: function (xml) {
@@ -34,12 +34,13 @@ function postScore(){
 
 function getScores(handleData){
     $.ajax({       
-       type : "GET",
-       url : "https://www.dawartz.dk/bug-runner/ProjectApi.php",  
+        type : "GET",
+        dataType: 'json',
+        url: "./ProjectApi.php",  
         error : function(xhr, ajaxOptions, thrownError){
            console.log("error:" + thrownError);
-       },     
-       success : function(data){
+        },     
+        success : function(data){
            console.log(data);
            handleData(data);
        },
@@ -52,7 +53,6 @@ function setScores(){
     getScores(function(scores){
         for (var i = 0; i < scores.length; i++) {
             $('#score-table tbody').append("<tr><td>"+scores[i].Name+"</td><td>"+scores[i].Score+"</td></tr>");
-            console.log(scores[i].Name);
         }
     });
 };
