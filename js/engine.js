@@ -25,14 +25,26 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime,
+        round = 0,
         backgroundImages = [
+            'images/stone-block.png',
+            'images/water-block.png',
+            'images/grass-block.png',
+            'images/char-princess-girl.png',
+            'images/Star.png',
+            'images/Rock.png',
+            'images/Gem Blue.png',
+            'images/Gem Orange.png',
+            'images/Gem Green.png',
+            'images/Selector.png',
+        ];
+        allResources = [
             'images/stone-block.png',
             'images/water-block.png',
             'images/grass-block.png',
             'images/enemy-bug.png',
             'images/char-boy.png',
             'images/char-princess-girl.png',
-            'images/Heart.png',
             'images/Star.png',
             'images/Rock.png',
             'images/Gem Blue.png',
@@ -85,6 +97,8 @@ var Engine = (function(global) {
      */
     function init() {
         reset();
+        gameChanger = updateBackground.call(player, getRandomBackground);
+        console.log(gameChanger);
         lastTime = Date.now();
         main();
     }
@@ -127,123 +141,7 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
-         var background;
-         // different backgrounds
-         switch (player.score){
-            case 0:
-                background = [
-                    'images/stone-block.png',
-                    'images/water-block.png',
-                    'images/water-block.png', 
-                    'images/water-block.png',   
-                    'images/grass-block.png',   
-                    'images/grass-block.png'
-                ]
-                break;
-            case 1:
-                background = [
-                    'images/water-block.png', 
-                    'images/Rock.png',   
-                    'images/Rock.png',
-                    'images/Rock.png',   
-                    'images/stone-block.png', 
-                    'images/stone-block.png'
-                ]
-                break;  
-            case 2:
-                background = [
-                    'images/grass-block.png',
-                    'images/Gem Blue.png',
-                    'images/Gem Blue.png',
-                    'images/Gem Blue.png',
-                    'images/water-block.png', 
-                    'images/water-block.png'
-                ]
-                break;
-            case 3:
-                background = [
-                    'images/water-block.png',
-                    'images/Star.png',
-                    'images/Star.png',
-                    'images/Star.png',
-                    'images/grass-block.png',
-                    'images/grass-block.png'
-                ]
-                break;  
-            case 4:
-                background = [
-                    'images/Gem Blue.png',   
-                    'images/Rock.png', 
-                    'images/Rock.png',
-                    'images/Rock.png',
-                    'images/water-block.png',
-                    'images/water-block.png'
-                ]
-                break;   
-            case 5:
-                background = [
-                    'images/Gem Green.png',
-                    'images/Selector.png',   
-                    'images/Selector.png',   
-                    'images/Selector.png',   
-                    'images/Gem Blue.png',   
-                    'images/Gem Blue.png'    
-                ]
-                break;
-            case 6:
-                background = [
-                    'images/Gem Orange.png',
-                    'images/Selector.png',
-                    'images/Selector.png',
-                    'images/Selector.png',
-                    'images/Gem Green.png',
-                    'images/Gem Green.png'
-                ]
-                break;
-            case 7:
-                background = [
-                    'images/Star.png',
-                    'images/Selector.png',
-                    'images/Selector.png',
-                    'images/Selector.png',
-                    'images/Gem Orange.png',
-                    'images/Gem Orange.png' 
-                ]     
-                break;
-            case 8:
-                background = [
-                    'images/water-block.png',
-                    'images/grass-block.png',
-                    'images/Selector.png',
-                    'images/grass-block.png',
-                    'images/Star.png',
-                    'images/Star.png' 
-                ]
-                break;  
-            case 9:
-                background = [
-                    'images/char-princess-girl.png',
-                    'images/grass-block.png',
-                    'images/grass-block.png',
-                    'images/grass-block.png',
-                    'images/water-block.png',
-                    'images/water-block.png'
-                ]
-                break;  
-            case 10:
-                background = [
-                    'images/water-block.png',
-                    'images/grass-block.png',
-                    'images/grass-block.png',
-                    'images/grass-block.png',
-                    'images/char-princess-girl.png',
-                    'images/char-princess-girl.png'
-                ]  
-                break;
-            default:
-                background = getRandomBackground();
-                break;
-        }
+        var background = gameChanger.getBackground.call(player);
         var rowImages = background,
             numRows = 6,
             numCols = 5,
@@ -267,19 +165,6 @@ var Engine = (function(global) {
         }
         renderEntities();
     }
-
-
-    /* This function creates a random background
-     * From all the available objects.
-     */
-    function getRandomBackground() {
-        var randomBackground = [];
-        for (var i = 5; i > 0; i--) {
-            randomBackground.push(backgroundImages[Math.floor(getRandomNumber(backgroundImages.length, 0))]);
-        }
-        return randomBackground;
-    }
-
 
     /* This function is called by the render function and is called on each game
      * tick. Its purpose is to then call the render functions you have defined
@@ -309,11 +194,44 @@ var Engine = (function(global) {
         ctx.fillText("Lives: 5", 400, 40);
     }
 
+
+    /* This function change the background of 
+     * the game.
+     */
+    function updateBackground(callback){
+        var currentScore = this.score;
+        var background = callback();
+        return {
+            getBackground:function(){
+                if(currentScore < player.score){
+                    console.log("inner");
+                    currentScore = player.score;
+                    background = callback();
+                    return callback();
+                }
+                return background;
+            }
+        }
+    }
+
+    /* This function returns a random background
+     * from all the available objects.
+     */
+    function getRandomBackground() {
+        var randomBackground = [];
+        for (var i = 0; i < 6; i++) {
+            var img = backgroundImages[Math.floor(getRandomNumber(backgroundImages.length, 0))];
+            randomBackground.push(img);
+        }
+        console.log(randomBackground);
+        return randomBackground;
+    }
+
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
      */
-    Resources.load(backgroundImages);
+    Resources.load(allResources);
     Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window
@@ -322,3 +240,5 @@ var Engine = (function(global) {
      */
     global.ctx = ctx;
 })(this);
+
+
