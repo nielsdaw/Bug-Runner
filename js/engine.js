@@ -98,7 +98,6 @@ var Engine = (function(global) {
     function init() {
         reset();
         gameChanger = updateBackground.call(player, getRandomBackground);
-        console.log(gameChanger);
         lastTime = Date.now();
         main();
     }
@@ -204,7 +203,6 @@ var Engine = (function(global) {
         return {
             getBackground:function(){
                 if(currentScore < player.score){
-                    console.log("inner");
                     currentScore = player.score;
                     background = callback();
                     return callback();
